@@ -1,13 +1,19 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/a2-ai/sorting-hat/internal/users"
 	"github.com/spf13/cobra"
 )
 
 func debugCmd(cfg *settings, args []string) {
-	fmt.Printf("%#v\n", cfg)
+	// fmt.Printf("%#v\n", cfg)
+	potentialUsers, err := users.GetPotentialUsersByDirName("/home", cfg.logger, 10)
+	if err != nil {
+		cfg.logger.Error(err.Error())
+	}
+	for _, u := range potentialUsers.Users {
+		cfg.logger.Info("userinfo", "user", u.Username, "groups", u.GroupIDs)
+	}
 }
 
 func newDebugCmd(cfg *settings) *cobra.Command {

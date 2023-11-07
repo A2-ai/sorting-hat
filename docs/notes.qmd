@@ -1,0 +1,31 @@
+---
+title: notes
+---
+
+## examining users/groups
+
+Adding a user to a group:
+
+```bash
+root@fb44d2942662:/workspaces/sorting-hat# id user20
+uid=3040(user20) gid=3040(user20) groups=3040(user20)
+root@fb44d2942662:/workspaces/sorting-hat# usermod -aG rstudio-connect user20
+root@fb44d2942662:/workspaces/sorting-hat# id user20
+uid=3040(user20) gid=3040(user20) groups=3040(user20),1000(rstudio-connect)
+```
+
+When running our potential user scanning, we now see the `rstudio-connect` gid:
+
+```bash
+root@fb44d2942662:/workspaces/sorting-hat# go run main.go debug
+time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user20 groups="[3040 1000]"
+time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user21 groups=[3041]
+time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user22 groups=[3042]
+time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user23 groups=[3043]
+time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user24 groups=[3044]
+time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user25 groups=[3045]
+time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user26 groups=[3046]
+time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user27 groups=[3047]
+time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user28 groups=[3048]
+time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user29 groups=[3049]
+```
