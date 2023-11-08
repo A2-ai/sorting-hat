@@ -78,6 +78,7 @@ func newRootCmd(version string) *rootCmd {
 	cmd.PersistentFlags().String("loglevel", "info", "log level")
 	viper.BindPFlag("loglevel", cmd.PersistentFlags().Lookup("loglevel"))
 	cmd.AddCommand(newDebugCmd(root.cfg))
+	cmd.AddCommand(newWatchCmd(root.cfg).cmd)
 	root.cmd = cmd
 	return root
 }

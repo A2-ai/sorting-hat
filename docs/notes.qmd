@@ -56,3 +56,62 @@ time elapsed: 10.157708ms
 time=2023-11-08T17:21:25.017Z level=INFO msg="NOT found in rstudio-connect group" user=user29 groups=[3049]
 time elapsed: 11.261333ms
 ```
+
+
+# running in pre-seeded setups
+
+```
+root@fb44d2942662:/workspaces/sorting-hat# go run main.go watch --dir=/home
+time=2023-11-08T18:17:55.708Z level=INFO msg="ran user check on rstudio-connect group membership" users_added=4
+root@fb44d2942662:/workspaces/sorting-hat# ./scripts/seed-users.sh 
+User user4005 created with UID 4005 and login shell /bin/bash
+User user4006 created with UID 4006 and login shell /bin/bash
+User user4007 created with UID 4007 and login shell /bin/bash
+User user4008 created with UID 4008 and login shell /bin/bash
+User user4009 created with UID 4009 and login shell /bin/bash
+User creation completed.
+root@fb44d2942662:/workspaces/sorting-hat# go run main.go watch --dir=/home --loglevel=debug
+time=2023-11-08T18:18:33.414Z level=DEBUG msg="found in rstudio-connect group" user=user20 n_grps=2
+time=2023-11-08T18:18:33.414Z level=DEBUG msg="found in rstudio-connect group" user=user1 n_grps=2
+time=2023-11-08T18:18:33.414Z level=DEBUG msg="found in rstudio-connect group" user=user29 n_grps=2
+time=2023-11-08T18:18:33.414Z level=DEBUG msg="found in rstudio-connect group" user=user28 n_grps=2
+time=2023-11-08T18:18:33.414Z level=DEBUG msg="NOT found in rstudio-connect group" user=user4008 n_grps=1
+time=2023-11-08T18:18:33.423Z level=DEBUG msg="found in rstudio-connect group" user=user2 n_grps=2
+time=2023-11-08T18:18:33.423Z level=DEBUG msg="found in rstudio-connect group" user=user21 n_grps=2
+time=2023-11-08T18:18:33.423Z level=DEBUG msg="NOT found in rstudio-connect group" user=user4009 n_grps=1
+time=2023-11-08T18:18:33.431Z level=DEBUG msg="found in rstudio-connect group" user=user23 n_grps=2
+time=2023-11-08T18:18:33.431Z level=DEBUG msg="NOT found in rstudio-connect group" user=user4006 n_grps=1
+time=2023-11-08T18:18:33.443Z level=DEBUG msg="NOT found in rstudio-connect group" user=user4005 n_grps=1
+time=2023-11-08T18:18:33.453Z level=DEBUG msg="NOT found in rstudio-connect group" user=user4007 n_grps=1
+time=2023-11-08T18:18:33.465Z level=DEBUG msg="found in rstudio-connect group" user=user3 n_grps=2
+time=2023-11-08T18:18:33.465Z level=DEBUG msg="found in rstudio-connect group" user=user24 n_grps=2
+time=2023-11-08T18:18:33.465Z level=DEBUG msg="found in rstudio-connect group" user=user25 n_grps=2
+time=2023-11-08T18:18:33.465Z level=DEBUG msg="found in rstudio-connect group" user=user26 n_grps=2
+time=2023-11-08T18:18:33.465Z level=DEBUG msg="found in rstudio-connect group" user=user4 n_grps=2
+time=2023-11-08T18:18:33.465Z level=DEBUG msg="found in rstudio-connect group" user=user27 n_grps=2
+time=2023-11-08T18:18:33.465Z level=DEBUG msg="found in rstudio-connect group" user=user22 n_grps=2
+time=2023-11-08T18:18:33.465Z level=INFO msg="ran user check on rstudio-connect group membership" users_added=5
+time=2023-11-08T18:18:33.465Z level=DEBUG msg="users added" names="[user4008 user4009 user4006 user4005 user4007]"
+root@fb44d2942662:/workspaces/sorting-hat# go run main.go watch --dir=/home --loglevel=debug
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user25 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user4009 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user21 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user27 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user28 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user4006 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user4007 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user23 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user20 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user29 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user4008 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user22 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user1 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user24 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user26 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user2 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user3 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user4 n_grps=2
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="found in rstudio-connect group" user=user4005 n_grps=2
+time=2023-11-08T18:18:42.977Z level=INFO msg="ran user check on rstudio-connect group membership" users_added=0
+time=2023-11-08T18:18:42.977Z level=DEBUG msg="users added" names=[]
+```
