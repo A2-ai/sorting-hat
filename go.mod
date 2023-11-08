@@ -3,6 +3,7 @@ module github.com/a2-ai/sorting-hat
 go 1.21.0
 
 require (
+	github.com/samber/lo v1.38.1
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.17.0
 )

@@ -29,3 +29,30 @@ time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user27 groups=[3047]
 time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user28 groups=[3048]
 time=2023-11-06T11:27:03.287Z level=INFO msg=userinfo user=user29 groups=[3049]
 ```
+
+
+Adding the user to a local group seems to take about 10 ms - When
+logging the duration of adding a user, we see:
+
+```
+root@fb44d2942662:/workspaces/sorting-hat# go run main.go debug
+time=2023-11-08T17:21:24.930Z level=INFO msg="NOT found in rstudio-connect group" user=user21 groups=[3041]
+time elapsed: 11.242417ms
+time=2023-11-08T17:21:24.941Z level=INFO msg="NOT found in rstudio-connect group" user=user23 groups=[3043]
+time elapsed: 8.484875ms
+time=2023-11-08T17:21:24.950Z level=INFO msg="NOT found in rstudio-connect group" user=user25 groups=[3045]
+time elapsed: 11.48375ms
+time=2023-11-08T17:21:24.961Z level=INFO msg="NOT found in rstudio-connect group" user=user27 groups=[3047]
+time elapsed: 9.700416ms
+time=2023-11-08T17:21:24.971Z level=INFO msg="NOT found in rstudio-connect group" user=user28 groups=[3048]
+time elapsed: 12.670041ms
+time=2023-11-08T17:21:24.984Z level=INFO msg="NOT found in rstudio-connect group" user=user26 groups=[3046]
+time elapsed: 11.53525ms
+time=2023-11-08T17:21:24.995Z level=INFO msg="NOT found in rstudio-connect group" user=user24 groups=[3044]
+time elapsed: 11.143959ms
+time=2023-11-08T17:21:25.007Z level=INFO msg="found in rstudio-connect group" user=user20 groups="[3040 1000]"
+time=2023-11-08T17:21:25.007Z level=INFO msg="NOT found in rstudio-connect group" user=user22 groups=[3042]
+time elapsed: 10.157708ms
+time=2023-11-08T17:21:25.017Z level=INFO msg="NOT found in rstudio-connect group" user=user29 groups=[3049]
+time elapsed: 11.261333ms
+```

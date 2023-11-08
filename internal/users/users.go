@@ -30,6 +30,19 @@ func (u *Users) Add(username string, user User) {
 	u.Users[username] = user
 }
 
+// AddToGroupByName adds the user to the group by name
+func (u User) AddToGroupByName(groupName string) error {
+	// one issue is this will immediately make the information
+	// about this user out of date, so one alternative is to
+	// use a pointer and then (optionally) refresh the user
+	// after performing this action. Given that the user.User
+	// is a pointer could theoretically modify this, however
+	// this would require a guid lookup and I don't love
+	// the api seemingly like its an immutable action by
+	// not taking a pointer to a user
+	return addUserToGroup(u.Username, groupName)
+}
+
 func getPotentialUsersByDirName(dir string) ([]string, error) {
 	var potentialUsers []string
 	dirs, err := os.ReadDir(dir)
