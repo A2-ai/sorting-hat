@@ -10,20 +10,20 @@ import (
 	"github.com/spf13/viper"
 )
 
-type watchOpts struct {
+type scanOpts struct {
 	dir string
 }
 
-type watchCmd struct {
+type scanCmd struct {
 	cmd  *cobra.Command
-	opts *watchOpts
+	opts *scanOpts
 }
 
-func (opts *watchOpts) Set() {
+func (opts *scanOpts) Set() {
 	opts.dir = viper.GetString("dir")
 }
 
-func (opts *watchOpts) Validate() error {
+func (opts *scanOpts) Validate() error {
 	// TODO: check dir exists
 	if opts.dir == "" {
 		return errors.New("please specify a directory")
@@ -31,7 +31,7 @@ func (opts *watchOpts) Validate() error {
 	return nil
 }
 
-func newWatch(cfg *settings, args []string) error {
+func newScan(cfg *settings, args []string) error {
 	// fmt.Printf("%#v\n", cfg)
 	grp, err := usr.LookupGroup("rstudio-connect")
 	if err != nil {
@@ -58,27 +58,27 @@ func newWatch(cfg *settings, args []string) error {
 			usersAdded = append(usersAdded, u.Username)
 		}
 	}
-	cfg.logger.Info("ran user check on rstudio-connect group membership", "users_added", len(usersAdded))
+	cfg.logger.Info("ran user check on rstudio-connect group membership", "users_added", len(usersAdded), "users_checked", len(potentialUsers.Users))
 	cfg.logger.Debug("users added", "names", usersAdded)
 	return nil
 }
 
-func newWatchCmd(cfg *settings) *watchCmd {
-	watchCmd := &watchCmd{opts: &watchOpts{}}
+func newScanCmd(cfg *settings) *scanCmd {
+	scanCmd := &scanCmd{opts: &scanOpts{}}
 	cmd := &cobra.Command{
 		Use:   "watch",
 		Short: "watch",
 		PreRunE: func(_ *cobra.Command, args []string) error {
-			watchCmd.opts.Set()
-			return watchCmd.opts.Validate()
+			scanCmd.opts.Set()
+			return scanCmd.opts.Validate()
 		},
 		RunE: func(_ *cobra.Command, args []string) error {
-			return newWatch(cfg, args)
+			return newScan(cfg, args)
 		},
 	}
 
 	cmd.Flags().String("dir", "", "directory for user homes")
 	viper.BindPFlag("dir", cmd.Flags().Lookup("dir"))
-	watchCmd.cmd = cmd
-	return watchCmd
+	scanCmd.cmd = cmd
+	return scanCmd
 }

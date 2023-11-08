@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -77,8 +78,11 @@ func newRootCmd(version string) *rootCmd {
 	cmd.SetVersionTemplate(`{{printf "%s\n" .Version}}`)
 	cmd.PersistentFlags().String("loglevel", "info", "log level")
 	viper.BindPFlag("loglevel", cmd.PersistentFlags().Lookup("loglevel"))
-	cmd.AddCommand(newDebugCmd(root.cfg))
-	cmd.AddCommand(newWatchCmd(root.cfg).cmd)
+	// only add debug to dev build
+	if strings.Contains(version, "dev") {
+		cmd.AddCommand(newDebugCmd(root.cfg))
+	}
+	cmd.AddCommand(newScanCmd(root.cfg).cmd)
 	root.cmd = cmd
 	return root
 }
