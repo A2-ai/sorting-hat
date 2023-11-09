@@ -1,0 +1,32 @@
+---
+title: systemd configuration
+---
+
+Create the /etc/systemd/system/sortinghat.service file with the following contents:
+
+```{.bash filename=/etc/systemd/system/sortinghat.service}
+[Unit]
+Description=Run sorting-hat
+
+[Service]
+Type=oneshot
+ExecStart=/opt/sortinghat/sortinghat watch --dir=<path/to/homedirs>
+
+[Install]
+WantedBy=multi-user.target
+```
+
+and the timer
+
+```{.bash filename=/etc/systemd/system/sortinghat.timer}
+[Unit]
+Description=Runs SortingHat on a schedule
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=5min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
