@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	usr "os/user"
+	"time"
 
 	"github.com/a2-ai/sorting-hat/internal/users"
 	"github.com/samber/lo"
@@ -33,6 +34,7 @@ func (opts *scanOpts) Validate() error {
 
 func newScan(cfg *settings, args []string) error {
 	// fmt.Printf("%#v\n", cfg)
+	startTime := time.Now()
 	grp, err := usr.LookupGroup("rstudio-connect")
 	if err != nil {
 		return err
@@ -58,7 +60,11 @@ func newScan(cfg *settings, args []string) error {
 			usersAdded = append(usersAdded, u.Username)
 		}
 	}
-	cfg.logger.Info("ran user check on rstudio-connect group membership", "users_added", len(usersAdded), "users_checked", len(potentialUsers.Users))
+	cfg.logger.Info("ran user check on rstudio-connect group membership",
+		"users_added", len(usersAdded),
+		"users_checked", len(potentialUsers.Users),
+		"duration_secs", time.Since(startTime).Seconds(),
+	)
 	cfg.logger.Debug("users added", "names", usersAdded)
 	return nil
 }

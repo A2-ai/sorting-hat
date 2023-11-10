@@ -9,7 +9,7 @@ fi
 # Define the starting UID
 START_UID=4000
 
-for ((i=5; i<10; i++)); do
+for ((i=15; i<17; i++)); do
     # Calculate the UID for the current user
     USER_UID=$((START_UID + i))
 

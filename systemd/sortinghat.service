@@ -1,0 +1,9 @@
+[Unit]
+Description=Run sorting-hat
+
+[Service]
+Type=oneshot
+ExecStart=/opt/sortinghat/sortinghat watch --dir=/home
+
+[Install]
+WantedBy=multi-user.target
