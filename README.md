@@ -48,4 +48,3 @@ time=2023-11-08T18:18:42.977Z level=DEBUG msg="users added" names=[]
 root@fb44d2942662:/workspaces/sorting-hat# go run main.go watch --dir=/home
 time=2023-11-08T18:27:57.872Z level=INFO msg="ran user check on rstudio-connect group membership" users_added=0 users_checked=19
 ```
-
