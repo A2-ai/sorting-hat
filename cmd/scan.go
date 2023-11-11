@@ -32,14 +32,14 @@ func (opts *scanOpts) Validate() error {
 	return nil
 }
 
-func newScan(cfg *settings, args []string) error {
+func newScan(cfg *settings, opts *scanOpts, args []string) error {
 	// fmt.Printf("%#v\n", cfg)
 	startTime := time.Now()
 	grp, err := usr.LookupGroup("rstudio-connect")
 	if err != nil {
 		return err
 	}
-	potentialUsers, err := users.GetPotentialUsersByDirName("/home", cfg.logger, 10)
+	potentialUsers, err := users.GetPotentialUsersByDirName(opts.dir, cfg.logger, 10)
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func newScanCmd(cfg *settings) *scanCmd {
 			return scanCmd.opts.Validate()
 		},
 		RunE: func(_ *cobra.Command, args []string) error {
-			return newScan(cfg, args)
+			return newScan(cfg, scanCmd.opts, args)
 		},
 	}
 
