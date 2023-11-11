@@ -72,8 +72,8 @@ func newScan(cfg *settings, args []string) error {
 func newScanCmd(cfg *settings) *scanCmd {
 	scanCmd := &scanCmd{opts: &scanOpts{}}
 	cmd := &cobra.Command{
-		Use:   "watch",
-		Short: "watch",
+		Use:   "scan",
+		Short: "scan",
 		PreRunE: func(_ *cobra.Command, args []string) error {
 			scanCmd.opts.Set()
 			return scanCmd.opts.Validate()
