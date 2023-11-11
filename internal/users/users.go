@@ -2,9 +2,11 @@ package users
 
 import (
 	"log/slog"
+	"math/rand"
 	"os"
 	"os/user"
 	"sync"
+	"time"
 )
 
 type User struct {
@@ -96,7 +98,12 @@ func GetPotentialUsersByDirName(dir string, logger *slog.Logger, concurrency int
 				wg.Done()
 				<-sem
 			}()
+			// sleep for some random interval up to 100 milliseconds, so don't make all the ldap queries at the exact same time
+			sleepDuration := time.Duration(rand.Intn(100)) * time.Millisecond
+			time.Sleep(sleepDuration)
+			startTime := time.Now()
 			user, err := lookupUser(usr, logger)
+			logger.Debug("lookup time", "user", usr, "duration", time.Since(startTime).Seconds())
 			if err != nil {
 				logger.Warn("failed to lookup user", "user", usr)
 				return
