@@ -1,0 +1,32 @@
+project_name: sortinghat
+
+# Build configuration
+builds:
+  - id: "sortinghat"
+    binary: sortinghat
+    goos:
+      - linux
+    goarch:
+      - amd64
+
+
+
+# nFPM packaging configuration
+nfpms:
+  - id: "sortinghat"
+    builds:
+      - "sortinghat"
+    formats:
+      - deb
+    file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    vendor: "A2-Ai"
+    homepage: "https://github.com/a2-ai/sortinghat"
+    maintainer: "Devin Pastoor <devin@a2-ai.com>"
+    description: "add users to local group"
+    license: "MIT"
+    bindir: "/opt/sortinghat"
+    contents:
+      - src: systemd/sortinghat.service
+        dst: "/lib/systemd/system/sortinghat.service"
+      - src: systemd/sortinghat.timer
+        dst: "/lib/systemd/system/sortinghat.timer"

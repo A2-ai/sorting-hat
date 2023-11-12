@@ -10,10 +10,13 @@ import (
 
 // https://goreleaser.com/cookbooks/using-main.version
 var (
-	version string = fmt.Sprintf("dev-%v", time.Now().Unix())
+	version string
 )
 
 func main() {
+	if version == "" {
+		version = fmt.Sprintf("dev-%v", time.Now().Unix())
+	}
 	// normalize the config home on osx to linux and get rid of the path spacing
 	cmd.Execute(version, os.Args[1:])
 }
