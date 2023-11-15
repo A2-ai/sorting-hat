@@ -50,6 +50,20 @@ func getSlogLevel(lvl string) (slog.Level, error) {
 	}
 }
 
+func init() {
+	cobra.OnInitialize(initConfig)
+}
+
+func initConfig() {
+	viper.SetConfigName("config")
+	viper.AddConfigPath("/etc/sortinghat")
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
+			slog.Error(fmt.Sprintf("failed to read config file: %s", err))
+			os.Exit(1)
+		}
+	}
+}
 func newRootCmd(version string) *rootCmd {
 	root := &rootCmd{cfg: &settings{}}
 	cmd := &cobra.Command{

@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"os"
 	"os/user"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -108,7 +109,12 @@ func GetPotentialUsersByDirName(dir string, logger *slog.Logger, concurrency int
 				logger.Warn("failed to lookup user", "user", usr)
 				return
 			}
-			users.Add(user.Username, user)
+			uid, _ := strconv.Atoi(user.User.Uid)
+			if uid < 1000 || user.User.Username == "ubuntu" || user.User.Username == "ssm-user" {
+				logger.Debug("skipping user as uid is less than 1000", "user", user.Username)
+			} else {
+				users.Add(user.Username, user)
+			}
 		}(u)
 	}
 	wg.Wait()

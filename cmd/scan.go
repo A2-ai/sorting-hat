@@ -12,7 +12,8 @@ import (
 )
 
 type scanOpts struct {
-	dir string
+	dir            string
+	allowed_groups []string
 }
 
 type scanCmd struct {
@@ -22,6 +23,7 @@ type scanCmd struct {
 
 func (opts *scanOpts) Set() {
 	opts.dir = viper.GetString("dir")
+	opts.allowed_groups = viper.GetStringSlice("allowed_groups")
 }
 
 func (opts *scanOpts) Validate() error {
@@ -82,9 +84,10 @@ func newScanCmd(cfg *settings) *scanCmd {
 			return newScan(cfg, scanCmd.opts, args)
 		},
 	}
-
 	cmd.Flags().String("dir", "", "directory for user homes")
 	viper.BindPFlag("dir", cmd.Flags().Lookup("dir"))
+	cmd.Flags().StringSlice("allowed_groups", []string{}, "allowed groups")
+	viper.BindPFlag("allowed_groups", cmd.Flags().Lookup("allowed_groups"))
 	scanCmd.cmd = cmd
 	return scanCmd
 }
