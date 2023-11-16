@@ -1,19 +1,15 @@
 package cmd
 
 import (
-	"errors"
 	usr "os/user"
 	"time"
 
 	"github.com/a2-ai/sorting-hat/internal/users"
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 type scanOpts struct {
-	dir            string
-	allowed_groups []string
 }
 
 type scanCmd struct {
@@ -22,26 +18,20 @@ type scanCmd struct {
 }
 
 func (opts *scanOpts) Set() {
-	opts.dir = viper.GetString("dir")
-	opts.allowed_groups = viper.GetStringSlice("allowed_groups")
 }
 
 func (opts *scanOpts) Validate() error {
-	// TODO: check dir exists
-	if opts.dir == "" {
-		return errors.New("please specify a directory")
-	}
 	return nil
 }
 
-func newScan(cfg *settings, opts *scanOpts, args []string) error {
+func newScan(cfg *rootOpts, opts *scanOpts, args []string) error {
 	// fmt.Printf("%#v\n", cfg)
 	startTime := time.Now()
 	grp, err := usr.LookupGroup("rstudio-connect")
 	if err != nil {
 		return err
 	}
-	potentialUsers, err := users.GetPotentialUsersByDirName(opts.dir, cfg.logger, 10)
+	potentialUsers, err := users.GetPotentialUsersByDirName(cfg.dir, cfg.logger, 10)
 	if err != nil {
 		return err
 	}
@@ -71,7 +61,7 @@ func newScan(cfg *settings, opts *scanOpts, args []string) error {
 	return nil
 }
 
-func newScanCmd(cfg *settings) *scanCmd {
+func newScanCmd(cfg *rootOpts) *scanCmd {
 	scanCmd := &scanCmd{opts: &scanOpts{}}
 	cmd := &cobra.Command{
 		Use:   "scan",
@@ -84,10 +74,6 @@ func newScanCmd(cfg *settings) *scanCmd {
 			return newScan(cfg, scanCmd.opts, args)
 		},
 	}
-	cmd.Flags().String("dir", "", "directory for user homes")
-	viper.BindPFlag("dir", cmd.Flags().Lookup("dir"))
-	cmd.Flags().StringSlice("allowed_groups", []string{}, "allowed groups")
-	viper.BindPFlag("allowed_groups", cmd.Flags().Lookup("allowed_groups"))
 	scanCmd.cmd = cmd
 	return scanCmd
 }

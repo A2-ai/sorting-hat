@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"log/slog"
 	"os"
@@ -10,14 +11,29 @@ import (
 	"github.com/spf13/viper"
 )
 
-type settings struct {
+type rootOpts struct {
 	// logrus log level
-	logger *slog.Logger
+	logger         *slog.Logger
+	dir            string
+	allowed_groups []string
 }
 
 type rootCmd struct {
 	cmd *cobra.Command
-	cfg *settings
+	cfg *rootOpts
+}
+
+func (opts *rootOpts) Set() {
+	opts.dir = viper.GetString("dir")
+	opts.allowed_groups = viper.GetStringSlice("allowed_groups")
+}
+
+func (opts *rootOpts) Validate() error {
+	// TODO: check dir exists
+	if opts.dir == "" {
+		return errors.New("please specify a directory")
+	}
+	return nil
 }
 
 func Execute(version string, args []string) {
@@ -65,11 +81,11 @@ func initConfig() {
 	}
 }
 func newRootCmd(version string) *rootCmd {
-	root := &rootCmd{cfg: &settings{}}
+	root := &rootCmd{cfg: &rootOpts{}}
 	cmd := &cobra.Command{
 		Use:   "sortinghat",
 		Short: "sortinghat is a tool for adding users to local groups as they enter the system",
-		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			// need to set the config values here as the viper values
 			// will not be processed until Execute, so can't
 			// set them in the initializer.
@@ -84,6 +100,8 @@ func newRootCmd(version string) *rootCmd {
 				Level: logLevel,
 			}))
 			root.cfg.logger = logger
+			root.cfg.Set()
+			return root.cfg.Validate()
 		},
 	}
 	cmd.Version = version
@@ -92,6 +110,11 @@ func newRootCmd(version string) *rootCmd {
 	cmd.SetVersionTemplate(`{{printf "%s\n" .Version}}`)
 	cmd.PersistentFlags().String("loglevel", "info", "log level")
 	viper.BindPFlag("loglevel", cmd.PersistentFlags().Lookup("loglevel"))
+
+	cmd.PersistentFlags().String("dir", "", "directory for user homes")
+	viper.BindPFlag("dir", cmd.PersistentFlags().Lookup("dir"))
+	cmd.PersistentFlags().StringSlice("allowed-groups", []string{}, "allowed groups")
+	viper.BindPFlag("allowed_groups", cmd.PersistentFlags().Lookup("allowed-groups"))
 	// only add debug to dev build
 	if strings.Contains(version, "dev") {
 		cmd.AddCommand(newDebugCmd(root.cfg))
