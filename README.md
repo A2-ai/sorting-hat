@@ -1,7 +1,7 @@
-sorting hat
+<img src='https://github.com/A2-ai/sorting-hat/assets/3196313/2122e6dc-32f6-468c-89c4-30d9eea08a85' width=100 height=100> sorting hat
 ===========
 
-`sortinghat` is a service for monitoring users coming into the system and adding them to
+  `sortinghat` is a service for monitoring users coming into the system and adding them to
 (local) unix group(s).
 
 The particular motivating use case is creating and managing a local `rstudio-connect`
