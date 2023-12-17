@@ -9,6 +9,18 @@ group to allow users on Posit Connect to RunAsCurrentUser without needing to
 also set up a separate unix group for them, which can be a painful approval activity
 in enterprise environments.
 
+## Installation and Activation
+
+After installing, update either the systemd service file command to include a `--dir` flag
+or update the `/etc/sortinghat/config.yml` file to include a `dir` key,
+then startup the service via:
+
+```
+systemctl daemon-reload                # Reload systemd to recognize the new timer
+systemctl enable sortinghat.timer      # Enable the timer to start on boot
+systemctl start sortinghat.timer       # Start the timer immediately
+```
+
 ## Usage
 
 ```shell

@@ -8,6 +8,7 @@ builds:
       - linux
     goarch:
       - amd64
+      - arm64
 
 
 
@@ -26,7 +27,10 @@ nfpms:
     license: "MIT"
     bindir: "/opt/sortinghat"
     contents:
-      - src: systemd/sortinghat.service
+      - src: ./systemd/sortinghat.service
         dst: "/lib/systemd/system/sortinghat.service"
-      - src: systemd/sortinghat.timer
+      - src: ./systemd/sortinghat.timer
         dst: "/lib/systemd/system/sortinghat.timer"
+      - src: ./systemd/config.yml
+        dst: /etc/sortinghat/sortinghat.yml
+        type: "config|noreplace"

@@ -1,0 +1,7 @@
+# can set the `dir` to the directory to the directory of homedirs
+# can set `allowed_groups` to as an array of groups that are allowed to get
+# added
+# dir: /shared/user-homes
+# allowed_groups:
+# - usergrp1
+# - usergrp2

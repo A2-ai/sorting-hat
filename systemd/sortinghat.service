@@ -3,7 +3,7 @@ Description=Run sorting-hat
 
 [Service]
 Type=oneshot
-ExecStart=/opt/sortinghat/sortinghat scan --dir=/shared
+ExecStart=/opt/sortinghat/sortinghat scan 
 
 [Install]
 WantedBy=multi-user.target
