@@ -14,7 +14,10 @@ permissions:
 
 jobs:
   goreleaser:
-    runs-on: ubuntu-latest
+  # can't use latest as then using on ubuntu 20.04 will
+  # result in a glibc version issue. Need glibc to get
+  # user information from ldap
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
         with:
